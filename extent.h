@@ -7,9 +7,9 @@
 
 using pairf=std::pair<float,float>;
 
-pairf MinMax(const flaot* cosnt x,int N)
+pairf MinMax(const float * const  x,int N)
 {
-    double min=max=x[0];
+    double min(x[0]),max(x[0]);
     for(int i=1;i<N;i++) {
         if (x[i] > max) max = x[i];
         else if (x[i] < min) min = x[i];
@@ -17,7 +17,7 @@ pairf MinMax(const flaot* cosnt x,int N)
     return pairf(min,max);
 }
 
-void extent(const int N, const float∗ const x, const float∗ const y, float& xmin, float& ymin, float& ext)
+void extent(const int N, const float ∗ const x,const float ∗ const y,float& xmin,float& ymin,float& ext)
 {
 pairf x_mm=MinMax(x,N);
 pairf y_mm=MinMax(y,N);
