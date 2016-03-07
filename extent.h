@@ -17,7 +17,7 @@ pairf MinMax(const float * const  x,int N)
     return pairf(min,max);
 }
 
-void extent(const int N, const float ∗ const x,const float ∗ const y,float& xmin,float& ymin,float& ext)
+void extent(const int N, const float * const x,const float * const y,float& xmin,float& ymin,float& ext)
 {
 pairf x_mm=MinMax(x,N);
 pairf y_mm=MinMax(y,N);
@@ -27,7 +27,6 @@ float  dx(x_mm.second-x_mm.first);
 float  dy(y_mm.second-y_mm.first);
 ext= dx>dy ? dx : dy;
 }
-
 
 
 
