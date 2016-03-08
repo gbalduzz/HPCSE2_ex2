@@ -17,10 +17,9 @@ const int n_threads=omp_get_num_threads();
   std::vector<pairf> block_minmax(n_threads);
   const int block_size=N/n_threads;
   const int last_block=block_size+N%n_threads;
-#pragma omp parallel
-    {
-        int t= omp_get_thread_num();
-        block_minmax[t]=serial_MinMax(x+t*block_size, (t==n_threads-1) ? block_size : last_block);
+#pragma omp parallel num_threads(4)
+  for(int t=0;t<n_threads;t++){
+    block_minmax[t]=serial_MinMax(x+t*block_size, (t==n_threads-1) ? block_size : last_block);
   }
   double min=block_minmax[0].first;
   double max=block_minmax[0].second;

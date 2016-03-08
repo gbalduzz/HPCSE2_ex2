@@ -20,6 +20,8 @@ int main() {
     int *keys=new int[N];
     InitializeAtRandom(x,y,N);
 
+    std::cout<<"parallelizing over "<<omp_get_num_threads()<<" threads"<<std::endl;
+
     float xmin,ymin,ext;
     {
         Profiler("Extend");

@@ -4,7 +4,7 @@
 #ifndef HPCSE2_EX2_SORT_H
 #define HPCSE2_EX2_SORT_H
 #include<algorithm>
-
+//TODO parallelize
 void sort(const int N,int* index,int* keys)
 {
     for(int i=0;i<N;i++) keys[i]=i;
