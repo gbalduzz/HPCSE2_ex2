@@ -6,7 +6,7 @@
 
 void reorder(const int N, const int* const keys, const float * const x,const float * const y,float *xsorted,float *ysorted)
 {
-  #pragma omp parallel for
+  #pragma omp parallel for schedule(static)
     for(int i=0;i<N;i++){
         xsorted[i]=x[keys[i]];
         ysorted[i]=y[keys[i]];
