@@ -1,3 +1,4 @@
+#include <omp.h>
 #include <iostream>
 #include <random>
 #include <assert.h>
@@ -6,8 +7,6 @@
 #include "profiler.h"
 #include "sort.h"
 #include"reorder.h"
-//TOME the quadtree is a tree. Root is a square containing all the space. Each parent branch has 4 children.
-// If there more then k particles in a leaf, branch it.
 void InitializeAtRandom(float* x,float* y,int N);
 
 int main() {
