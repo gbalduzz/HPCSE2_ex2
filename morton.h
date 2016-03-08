@@ -42,7 +42,7 @@ uint   interleave(uint x,uint y)
 
 inline uint integer_mantissa(float x,float xmin,float xmax){
     //map x,y from [x/ymin,x/ymin+ext] to [0, 65536)
-    return (uint) (x-xmin)/(xmax-xmin)*65535;
+    return static_cast<uint>( (x-xmin)/(xmax-xmin)*65535 );
 }
 
 uint integer_mantissa(float x);
