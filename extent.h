@@ -13,13 +13,13 @@ pairf serial_MinMax(const float * const  x,int N);
 pairf MinMax(const float * const  x,int N)
 //parallel implementation
 {
-const int n_threads=omp_get_num_threads();
+const int n_threads=omp_get_max_threads();
   std::vector<pairf> block_minmax(n_threads);
   const int block_size=N/n_threads;
   const int last_block=block_size+N%n_threads;
-#pragma omp parallel num_threads(4)
+#pragma omp parallel for
   for(int t=0;t<n_threads;t++){
-    block_minmax[t]=serial_MinMax(x+t*block_size, (t==n_threads-1) ? block_size : last_block);
+          block_minmax[t]=serial_MinMax(x+t*block_size, (t==n_threads-1) ? block_size : last_block);
   }
   double min=block_minmax[0].first;
   double max=block_minmax[0].second;

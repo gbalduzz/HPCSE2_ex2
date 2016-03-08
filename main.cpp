@@ -20,7 +20,8 @@ int main() {
     int *keys=new int[N];
     InitializeAtRandom(x,y,N);
 
-    std::cout<<"parallelizing over "<<omp_get_num_threads()<<" threads"<<std::endl;
+//can be changed by export OMP_NUM_THREADS=...
+    std::cout<<"parallelizing over "<<omp_get_max_threads()<<" threads\n"<<std::endl;
 
     float xmin,ymin,ext;
     {
@@ -39,7 +40,7 @@ int main() {
         Profiler("Reorder");
         reorder(N,keys,x,y,xsorted,ysorted);
     }
-    std::cout<<"cleaning up.\n";
+    std::cout<<"\ncleaning up.\n";
 
     delete[] x;       delete[] y;
     delete[] index;   delete[] keys;
