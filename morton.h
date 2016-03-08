@@ -1,8 +1,8 @@
 //
 // Created by giovanni on 07.03.16.
 //
-#ifndef EX2_CLION_MORTON_H
-#define EX2_CLION_MORTON_H
+#ifndef EX2_MORTON_H
+#define EX2_MORTON_H
 using uint=unsigned int;
 
 inline uint integer_mantissa(float x,float xmin,float xmax);
@@ -46,4 +46,4 @@ inline uint integer_mantissa(float x,float xmin,float xmax){
 }
 
 uint integer_mantissa(float x);
-#endif //EX2_CLION_MORTON_H
+#endif //EX2_MORTON_H

@@ -7,9 +7,9 @@
 
 void sort(const int N,int* index,int* keys)
 {
-    for(int i=0;i,N;i++) keys[i]=i;
+    for(int i=0;i<N;i++) keys[i]=i;
     //order the keys according to the relation between indexes
-    std::sort(keys.begin(), keys.end(),
+    std::sort(keys, keys+N,
          [&](const int& a, const int& b) {
              return (index[a] < index[b]);
          }

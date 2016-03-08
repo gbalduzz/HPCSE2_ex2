@@ -1,8 +1,8 @@
 //
 // Created by giovanni on 07.03.16.
 //
-#ifndef EX2_CLION_PROFILER_H
-#define EX2_CLION_PROFILER_H
+#ifndef EX2_PROFILER_H
+#define EX2_PROFILER_H
 #include <unistd.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -31,4 +31,4 @@ long int Profiler::elapsed() {
     return (long int) (t1.tv_nsec-t0.tv_nsec)+(t1.tv_sec-t0.tv_sec)*1e9;
 }
 
-#endif //EX2_CLION_PROFILER_H
+#endif //EX2_PROFILER_H

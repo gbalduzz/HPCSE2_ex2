@@ -2,8 +2,8 @@
 // Created by giovanni on 07.03.16.
 //
 
-#ifndef EX2_CLION_EXTENT_H
-#define EX2_CLION_EXTENT_H
+#ifndef EX2_EXTENT_H
+#define EX2_EXTENT_H
 
 using pairf=std::pair<float,float>;
 
@@ -30,4 +30,4 @@ ext= dx>dy ? dx : dy;
 
 
 
-#endif //EX2_CLION_EXTENT_H
+#endif //EX2_EXTENT_H
