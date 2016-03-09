@@ -7,6 +7,7 @@
 
 void sort(const int N,int* index,int* keys)
 {
+    #pragma omp parallel for schedule(static)
     for(int i=0;i<N;i++) keys[i]=i;
     //order the keys according to the relation between indexes
     __gnu_parallel::sort(keys, keys+N,
