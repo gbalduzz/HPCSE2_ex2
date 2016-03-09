@@ -23,19 +23,19 @@ int main() {
 
     float xmin,ymin,ext;
     {
-        Profiler("Extend");
+        Profiler p("Extend");
         extent(N,x,y,xmin,ymin,ext);
     }
     {
-        Profiler("Morton");
+        Profiler p("Morton");
         morton(N,x,y,xmin,ymin,ext,index);
     }
     {
-        Profiler("Sort");
+        Profiler p("Sort");
         sort(N,index,keys);
     }
     {
-        Profiler("Reorder");
+        Profiler p("Reorder");
         reorder(N,keys,x,y,xsorted,ysorted);
     }
     std::cout<<"cleaning up.\n";
