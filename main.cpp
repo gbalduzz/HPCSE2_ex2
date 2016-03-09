@@ -1,3 +1,5 @@
+const int global_n_threads=4;
+#include <hpx/hpx.hpp>
 #include <omp.h>
 #include <iostream>
 #include <random>
@@ -7,17 +9,17 @@
 #include "profiler.h"
 #include "sort.h"
 #include"reorder.h"
-void InitializeAtRandom(float* x,float* y,int N);
+void InitializeAtRandom(vector<float>& x,vector<float>& y,int N);
 
-int main() {
-    assert(sizeof(int)==4);
+int hpx_main() {
+    static_assert(sizeof(int)==4,"Only 32 bits integeres are supported.");
     const int N=1e7;
-    float *x=new float[N];
-    float *y=new float[N];
-    float *xsorted=new float[N];
-    float *ysorted=new float[N];
-    int *index=new int[N];
-    int *keys=new int[N];
+    std::vector<float> x(N);
+    std::vector<float> y(N);
+    std::vector<float> xsorted(N);
+    std::vector<float> ysorted(N);
+    std::vector<int> index(N);
+    std::vector<int> keys(N);
     InitializeAtRandom(x,y,N);
 
 //can be changed by export OMP_NUM_THREADS=...
@@ -28,7 +30,7 @@ int main() {
         Profiler("Extend");
         extent(N,x,y,xmin,ymin,ext);
     }
-    {
+   /* {
         Profiler("Morton");
         morton(N,x,y,xmin,ymin,ext,index);
     }
@@ -40,14 +42,17 @@ int main() {
         Profiler("Reorder");
         reorder(N,keys,x,y,xsorted,ysorted);
     }
-    std::cout<<"\ncleaning up.\n";
+  */
 
-    delete[] x;       delete[] y;
-    delete[] index;   delete[] keys;
-    delete[] xsorted; delete[] ysorted;
+    return hpx::finalize();
 }
 
-void InitializeAtRandom(float* x,float* y,int N){
+int main(int argc,char**argv)
+{
+return hpx::init(argc,argv);
+}
+
+void InitializeAtRandom(vector<float>& x,vector<float>& y,int N){
     std::mt19937_64 mt(0);
     std::uniform_real_distribution<float> rand(0,1);
     for(int i=0;i<N;i++){
