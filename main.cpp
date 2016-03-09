@@ -1,14 +1,15 @@
-const int global_n_threads=4;
+//const int global_n_threads=4;
+#include <hpx/hpx.hpp>
 #include <hpx/hpx.hpp>
 #include <omp.h>
 #include <iostream>
 #include <random>
 #include <assert.h>
-#include "extent.h"
-#include "morton.h"
-#include "profiler.h"
-#include "sort.h"
-#include"reorder.h"
+#include "include/extent.h"
+#include "include/morton.h"
+#include "include/profiler.h"
+#include "include/sort.h"
+#include"include/reorder.h"
 void InitializeAtRandom(vector<float>& x,vector<float>& y,int N);
 
 int hpx_main() {
@@ -23,14 +24,14 @@ int hpx_main() {
     InitializeAtRandom(x,y,N);
 
 //can be changed by export OMP_NUM_THREADS=...
-    std::cout<<"parallelizing over "<<omp_get_max_threads()<<" threads\n"<<std::endl;
+    std::cout<<"parallelizing over "<<NUM_THREADS<<" threads\n"<<std::endl;
 
     float xmin,ymin,ext;
     {
         Profiler("Extend");
         extent(N,x,y,xmin,ymin,ext);
     }
-   /* {
+    {
         Profiler("Morton");
         morton(N,x,y,xmin,ymin,ext,index);
     }
@@ -42,7 +43,7 @@ int hpx_main() {
         Profiler("Reorder");
         reorder(N,keys,x,y,xsorted,ysorted);
     }
-  */
+
 
     return hpx::finalize();
 }

@@ -8,10 +8,11 @@ using uint=unsigned int;
 inline uint integer_mantissa(float x,float xmin,float xmax);
 uint   interleave(uint x,uint y);
 
-void morton(const int N,const float * const x,const float * const y,const float xmin,const float ymin, const float ext, int * index)
+void morton(const int N, const vector<float> &x, const vector<float> &y, const float xmin, const float ymin,
+            const float ext, vector<int> &index)
 //takes array or coords and return array of square's label where the particle resides
 {
-  #pragma omp parallel for schedule(static)
+  #pragma omp parallel for schedule(static) num_threads(NUM_THREADS)
 for(int i=0;i<N;i++){
     index[i]=interleave(integer_mantissa(x[i],xmin,ext+xmin),integer_mantissa(y[i],ymin,ext+ymin));
 }

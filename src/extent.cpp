@@ -1,19 +1,24 @@
-//
-// Created by giovanni on 07.03.16.
-//
-
-#ifndef EX2_EXTENT_H
-#define EX2_EXTENT_H
-#include<hpx/hpx.hpp>
-#include<vector>
+#include "../include/extent.h"
 using pairf=std::pair<float,float>;
-using std::vector;
+
 pairf bracket_MinMax(const vector<float> &x, const int start, const int end);
+pairf MinMax(const vector<float>&  x,int N);
+
+void extent(const int N, const vector<float>& x,const vector<float>& y,float& xmin,float& ymin,float& ext)
+{
+    pairf x_mm=MinMax(x,N);
+    pairf y_mm=MinMax(y,N);
+    xmin=x_mm.first;
+    ymin=y_mm.first;
+    float  dx(x_mm.second-x_mm.first);
+    float  dy(y_mm.second-y_mm.first);
+    ext= dx>dy ? dx : dy;
+}
 
 pairf MinMax(const vector<float>&  x,int N)
 //parallel implementation
 {
-    const int n_threads=global_n_threads;
+    const int n_threads=NUM_THREADS;
     std::vector<hpx::future<pairf>> futures(n_threads);
     const int block_size=N/n_threads;
     const int last_block=block_size+N%n_threads;
@@ -31,22 +36,6 @@ pairf MinMax(const vector<float>&  x,int N)
     }
     return pairf(min,max);
 }
-/*pairf MinMax(const vector<float>& x,const int N)
-{
-    hpx::future<pairf> ft=hpx::async(bracket_MinMax,x, 0,N/10);
-    return  ft.get();
-}*/
-
-void extent(const int N, const vector<float>& x,const vector<float>& y,float& xmin,float& ymin,float& ext)
-{
-    pairf x_mm=MinMax(x,N);
-    pairf y_mm=MinMax(y,N);
-    xmin=x_mm.first;
-    ymin=y_mm.first;
-    float  dx(x_mm.second-x_mm.first);
-    float  dy(y_mm.second-y_mm.first);
-    ext= dx>dy ? dx : dy;
-}
 
 pairf bracket_MinMax(const vector<float> &x, const int start, const int size)
 {
@@ -60,5 +49,3 @@ pairf bracket_MinMax(const vector<float> &x, const int start, const int size)
     }
     return pairf(min,max);
 }
-
-#endif //EX2_EXTENT_H
