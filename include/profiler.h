@@ -16,7 +16,7 @@ public:
 private:
     std::string name;
     timespec t0,t1;
-    long int elapsed();
+    float elapsed();
 };
 
 Profiler::Profiler(std::string n0):name(n0){
@@ -25,11 +25,11 @@ Profiler::Profiler(std::string n0):name(n0){
 
 inline Profiler::~Profiler() {
     clock_gettime(CLOCK_MONOTONIC, &t1);
-    std::cout<<"function "<<name<<" took "<<elapsed()<< " ns to complete"<<std::endl;
+    std::cout<<"function "<<name<<"\t took "<<elapsed()<< "\t ns to complete"<<std::endl;
 }
 
-long int Profiler::elapsed() {
-    return (long int) (t1.tv_nsec-t0.tv_nsec)+(t1.tv_sec-t0.tv_sec)*1e9;
+float Profiler::elapsed() {
+    return  (t1.tv_nsec-t0.tv_nsec)*1e-9+(t1.tv_sec-t0.tv_sec);
 }
 
 #endif //EX2_PROFILER_H
