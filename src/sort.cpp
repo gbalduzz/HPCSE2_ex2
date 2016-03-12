@@ -7,7 +7,8 @@
 #include<hpx/parallel/algorithms/sort.hpp>
 #include<hpx/parallel/algorithms/for_each.hpp>
 #include <hpx/parallel/execution_policy.hpp>
-void sort(const int N,const vector<int>& index,vector<int>& keys)
+
+void sort(const int N,vector<int>& index,vector<int>& keys)
 {
   int i=0;
     hpx::parallel::for_each( hpx::parallel::v1::parallel_execution_policy(),

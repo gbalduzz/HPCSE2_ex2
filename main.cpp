@@ -1,4 +1,5 @@
 //const int global_n_threads=4;
+#define VERBOSE
 #include <hpx/hpx.hpp>
 #include <hpx/hpx.hpp>
 #include <iostream>
@@ -11,9 +12,10 @@
 #include"include/reorder.h"
 void InitializeAtRandom(vector<float>& x,vector<float>& y,int N);
 
-int hpx_main() {
+int hpx_main(int argc,char** argv) {
     static_assert(sizeof(int)==4,"Only 32 bits integeres are supported.");
-    const int N=1e7;
+    const int N_default=1e7;
+    int N= (argc>1) ? std::atoi(argv[1]) : N_default;
     std::vector<float> x(N);
     std::vector<float> y(N);
     std::vector<float> xsorted(N);
@@ -43,7 +45,12 @@ int hpx_main() {
         reorder(N,keys,x,y,xsorted,ysorted);
     }
 
-
+#ifdef VERBOSE
+    
+    std::cout<<"\nThe first 5 x/y are:\n";
+    for(int i=0;i<5;i++) std::cout<<xsorted[i]<<"\t"<<ysorted[i]<<std::endl;
+#endif
+    
     return hpx::finalize();
 }
 

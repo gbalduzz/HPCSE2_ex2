@@ -10,10 +10,10 @@ void reorder(const int N, const vector<int>& keys, const vector<float> &x, const
 {
     int i(0);
     hpx::parallel::for_each( hpx::parallel::v1::parallel_execution_policy(),
-                            std::begin(xsorted),std::end(xsorted),
-                            [&](float &foo) {
-                                xsorted[i] = x[keys[i]];
-                                ysorted[i] = y[keys[i]];
+                            std::begin(keys),std::end(keys),
+                            [&](const int& k) {
+                                xsorted[i] = x[k];
+                                ysorted[i] = y[k];
                                 i++;
                             }
     );
