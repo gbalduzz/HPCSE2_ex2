@@ -1,7 +1,6 @@
 //const int global_n_threads=4;
 #include <hpx/hpx.hpp>
 #include <hpx/hpx.hpp>
-#include <omp.h>
 #include <iostream>
 #include <random>
 #include <assert.h>

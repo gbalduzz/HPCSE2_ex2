@@ -5,11 +5,16 @@
 #include "../include/profiler.h"
 #include<hpx/hpx.hpp>
 #include<hpx/parallel/algorithms/sort.hpp>
+#include<hpx/parallel/algorithms/for_each.hpp>
 #include <hpx/parallel/execution_policy.hpp>
-void sort(const int N,vector<int>& index,vector<int>& keys)
+void sort(const int N,const vector<int>& index,vector<int>& keys)
 {
- #pragma omp parallel for num_threads(NUM_THREADS)
-        for (int i = 0; i < N; i++) keys[i] = i;
+  int i=0;
+    hpx::parallel::for_each( hpx::parallel::v1::parallel_execution_policy(),
+            keys.begin(),keys.end(),
+        [&](int &k) {k = i; i++;}
+    );
+
     //order the keys according to the relation between indexes
     hpx::parallel::sort( hpx::parallel::v1::parallel_vector_execution_policy(),
                          keys.begin(),keys.end(),

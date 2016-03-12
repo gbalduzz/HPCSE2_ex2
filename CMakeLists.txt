@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(HPCSE2_ex2)
 find_package(HPX REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE  "-O3")
 
@@ -20,8 +20,20 @@ add_hpx_component(
         HEADERS include/sort.h
 )
 
+add_hpx_component(
+        morton
+        SOURCES src/morton.cpp
+        HEADERS include/morton.h
+)
+
+add_hpx_component(
+        reorder
+        SOURCES src/reorder.cpp
+        HEADERS include/reorder.h
+)
+
 add_hpx_executable(
         ex2_hpx
         SOURCES main.cpp
-        COMPONENT_DEPENDENCIES extend sort
+        COMPONENT_DEPENDENCIES extend sort morton reorder
 )
