@@ -1,51 +1,18 @@
 #include "../include/extent.h"
+#include <hpx/parallel/algorithms/minmax.hpp>
 using pairf=std::pair<float,float>;
 
 pairf bracket_MinMax(const vector<float> &x, const int start, const int end);
-pairf MinMax(const vector<float>&  x,int N);
 
 void extent(const int N, const vector<float>& x,const vector<float>& y,float& xmin,float& ymin,float& ext)
 {
-    pairf x_mm=MinMax(x,N);
-    pairf y_mm=MinMax(y,N);
-    xmin=x_mm.first;
-    ymin=y_mm.first;
-    float  dx(x_mm.second-x_mm.first);
-    float  dy(y_mm.second-y_mm.first);
+    auto policy=hpx::parallel::par.with(hpx::parallel::static_chunk_size(100000));
+    auto x_mm=hpx::parallel::minmax_element(policy,x.begin(),x.end());
+    auto y_mm=hpx::parallel::minmax_element(policy,y.begin(),y.end());
+
+    xmin=*(x_mm.first);
+    ymin=*(y_mm.first);
+    float  dx(*(x_mm.second)-xmin);
+    float  dy(*(y_mm.second)-ymin);
     ext= dx>dy ? dx : dy;
-}
-
-pairf MinMax(const vector<float>&  x,int N)
-//parallel implementation
-{
-    const int n_threads=hpx::get_os_thread_count();
-    std::vector<hpx::future<pairf>> futures(n_threads);
-    const int block_size=N/n_threads;
-    const int last_block=block_size+N%n_threads;
-    for(int i=0;i<n_threads;i++){
-        futures[i]=hpx::async(bracket_MinMax,x,i*block_size, (i==n_threads-1) ? block_size : last_block);
-    }
-    //compute global maximum
-    pairf mm=futures[0].get();
-    double min=mm.first;
-    double max=mm.second;
-    for(int i=1;i<n_threads;i++){
-        mm=futures[i].get();
-        if(mm.first<min) min=mm.first;
-        if(mm.second>max) max=mm.second;
-    }
-    return pairf(min,max);
-}
-
-pairf bracket_MinMax(const vector<float> &x, const int start, const int size)
-{
-#if DEBUG
-    assert(start>=0 && size+start<= x.size());
-#endif
-    double min(x[start]),max(x[start]);
-    for(int i=start; i < start+size; i++) {
-        if (x[i] > max) max = x[i];
-        else if (x[i] < min) min = x[i];
-    }
-    return pairf(min,max);
 }
