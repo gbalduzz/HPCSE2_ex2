@@ -18,7 +18,7 @@ void extent(const int N, const vector<float>& x,const vector<float>& y,float& xm
 pairf MinMax(const vector<float>&  x,int N)
 //parallel implementation
 {
-    const int n_threads=NUM_THREADS;
+    const int n_threads=hpx::get_os_thread_count();
     std::vector<hpx::future<pairf>> futures(n_threads);
     const int block_size=N/n_threads;
     const int last_block=block_size+N%n_threads;

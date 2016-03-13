@@ -10,12 +10,14 @@
 #include "include/profiler.h"
 #include "include/sort.h"
 #include"include/reorder.h"
+using std::cout; using std::endl;
 void InitializeAtRandom(vector<float>& x,vector<float>& y,int N);
 
 int hpx_main(int argc,char** argv) {
     static_assert(sizeof(int)==4,"Only 32 bits integeres are supported.");
     const int N_default=1e7;
     int N= (argc>1) ? std::atoi(argv[1]) : N_default;
+    cout<<"Size: "<<N<<endl;
     std::vector<float> x(N);
     std::vector<float> y(N);
     std::vector<float> xsorted(N);
@@ -25,7 +27,7 @@ int hpx_main(int argc,char** argv) {
     InitializeAtRandom(x,y,N);
 
 //can be changed by export OMP_NUM_THREADS=...
-    std::cout<<"parallelizing over "<<NUM_THREADS<<" threads\n"<<std::endl;
+    std::cout<<"parallelizing over "<<hpx::get_os_thread_count() <<" threads\n"<<std::endl;
 
     float xmin,ymin,ext;
     {

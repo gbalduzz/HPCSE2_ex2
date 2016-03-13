@@ -10,14 +10,15 @@
 
 void sort(const int N,vector<int>& index,vector<int>& keys)
 {
+auto policy=hpx::parallel::par.with(hpx::parallel::static_chunk_size(100000));
   int i=0;
-    hpx::parallel::for_each( hpx::parallel::v1::parallel_execution_policy(),
+    hpx::parallel::for_each( policy,
             keys.begin(),keys.end(),
         [&](int &k) {k = i; i++;}
     );
 
     //order the keys according to the relation between indexes
-    hpx::parallel::sort( hpx::parallel::v1::parallel_vector_execution_policy(),
+    hpx::parallel::sort( policy,
                          keys.begin(),keys.end(),
                          [&](const int& a, const int& b) {return (index[a] < index[b]);}
     );
