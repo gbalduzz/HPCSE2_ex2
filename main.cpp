@@ -12,7 +12,7 @@
 #include"include/reorder.h"
 using std::cout; using std::endl;
 void InitializeAtRandom(vector<float>& x,vector<float>& y,int N);
-using std::vector;
+
 int hpx_main(int argc,char** argv) {
     static_assert(sizeof(int)==4,"Only 32 bits integeres are supported.");
     const int N_default=1e7;
@@ -26,7 +26,6 @@ int hpx_main(int argc,char** argv) {
     std::vector<int> keys(N);
     InitializeAtRandom(x,y,N);
 
-
 //can be changed by export OMP_NUM_THREADS=...
     std::cout<<"parallelizing over "<<hpx::get_os_thread_count() <<" threads\n"<<std::endl;
 
@@ -35,26 +34,18 @@ int hpx_main(int argc,char** argv) {
         Profiler p("Extend");
         extent(N,x,y,xmin,ymin,ext);
     }
-    vector<int> ind2(N);
     {
         Profiler p("Morton");
         morton(N,x,y,xmin,ymin,ext,index);
     }
-    morton(N,x,y,xmin,ymin,ext,ind2);
-    for (int i=0;i<N;i++) assert(index[i]==ind2[i]);
     {
         Profiler p("Sort");
         sort(N,index,keys);
     }
-    vector<int> k2(N);
-    sort(N,ind2,k2);
     {
         Profiler p("Reorder");
         reorder(N,keys,x,y,xsorted,ysorted);
     }
-    vector<float> xs2(N);
-    reorder(N,k2,x,y,xs2,ysorted);
-    for (int i=0;i<N;i++) assert(xsorted[i]==xs2[i]);
 
 #ifdef VERBOSE
     
