@@ -2,6 +2,7 @@
 // Created by giovanni on 12.03.16.
 //
 #include "../include/morton.h"
+#include "../include/parallel_for.h"
 
 uint   interleave(uint x,uint y);
 inline uint integer_mantissa(float x,float xmin,float xmax);
@@ -9,13 +10,9 @@ inline uint integer_mantissa(float x,float xmin,float xmax);
 void morton(const int N, const vector<float> &x, const vector<float> &y, const float xmin, const float ymin,
    const float ext, vector<int> &index)
 {
-    hpx::parallel::for_each( hpx::parallel::v1::parallel_execution_policy(),
-            std::begin(index),std::end(index),
-            [&](int& idx)
-            {
-                int i=&idx-&index[0];//std::distance(idx,std::begin(index));
-                idx=interleave(integer_mantissa(x[i],xmin,ext+xmin),integer_mantissa(y[i],ymin,ext+ymin));
-            }
+    parallel_for(100000,N,
+                 [&](int i)
+            { index[i]=interleave(integer_mantissa(x[i],xmin,ext+xmin),integer_mantissa(y[i],ymin,ext+ymin));}
     );
 
 }
