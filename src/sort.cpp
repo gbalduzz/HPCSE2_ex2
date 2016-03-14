@@ -11,10 +11,9 @@
 void sort(const int N,vector<int>& index,vector<int>& keys)
 {
 auto policy=hpx::parallel::par.with(hpx::parallel::static_chunk_size(100000));
-  int i=0;
     hpx::parallel::for_each( policy,
             keys.begin(),keys.end(),
-        [&](int &k) {k = i; i++;}
+        [&](int &k) {k = &k-&keys[0];} 
     );
 
     //order the keys according to the relation between indexes

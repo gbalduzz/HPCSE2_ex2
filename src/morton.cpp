@@ -9,11 +9,13 @@ inline uint integer_mantissa(float x,float xmin,float xmax);
 void morton(const int N, const vector<float> &x, const vector<float> &y, const float xmin, const float ymin,
    const float ext, vector<int> &index)
 {
-    int i(0);
     hpx::parallel::for_each( hpx::parallel::v1::parallel_execution_policy(),
             std::begin(index),std::end(index),
             [&](int& idx)
-            {idx=interleave(integer_mantissa(x[i],xmin,ext+xmin),integer_mantissa(y[i],ymin,ext+ymin)); i++;}
+            {
+                int i=&idx-&index[0];//std::distance(idx,std::begin(index));
+                idx=interleave(integer_mantissa(x[i],xmin,ext+xmin),integer_mantissa(y[i],ymin,ext+ymin));
+            }
     );
 
 }
